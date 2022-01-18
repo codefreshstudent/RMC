@@ -1,0 +1,80 @@
+///中光子耦合验证///
+UNIVERSE 0
+cell 1  -1:21:-23:24  mat = 0  void = 1
+cell 2  1&-2&23&-24   mat=1
+cell 3 2&-3&23&-24   mat=1
+cell 4 3&-4&23&-24   mat=1
+cell 5 4&-5&23&-24   mat=1
+cell 6 5&-6&23&-24   mat=1
+cell 7 6&-7&23&-24   mat=1
+cell 8 7&-8&23&-24   mat=1
+cell 9 8&-9&23&-24   mat=1
+cell 10 9&-10&23&-24   mat=1
+cell 11 10&-11&23&-24   mat=1
+cell 12 11&-12&23&-24   mat=1
+cell 13 12&-13&23&-24   mat=1
+cell 14 13&-14&23&-24   mat=1
+cell 15 14&-15&23&-24   mat=1
+cell 16 15&-16&23&-24   mat=1
+cell 17 16&-17&23&-24   mat=1
+cell 18 17&-18&23&-24   mat=1
+cell 19 18&-19&23&-24   mat=1
+cell 20 19&-20&23&-24   mat=1
+cell 21 20&-21&23&-24   mat=1
+             
+MATERIAL
+mat 11  -18.201     //钨90%-铁10%
+        74180.71c   1
+	    26056.71c   1
+mat 1  -1.0     // H2O
+       8016.71c 1
+       1001.71c 2
+
+SURFACE
+surf  1  pz  0  bc=1
+surf  2  pz  5
+surf  3  pz  10
+surf  4  pz  15
+surf  5  pz  20
+surf  6  pz  25
+surf  7  pz  30
+surf  8  pz  35
+surf  9  pz  40
+surf  10  pz  45
+surf  11  pz  50
+surf  12  pz  55
+surf  13  pz  60
+surf  14  pz  65
+surf  15  pz  70
+surf  16  pz  75
+surf  17  pz  80
+surf  18  pz  85
+surf  19  pz  90
+surf  20  pz  95
+surf  21  pz  100 bc=1
+surf  23  px  0  bc=1
+surf  24  px  100  bc=1
+
+Physics
+// neutron photon electron coupling calculation
+particleMode N P E
+Photon  PPRODUCEE=1         TTB=0            ANNIHILATION=0    COHERENT=1 
+        PHOTONNUCLEUS=0     DOPPLER=1        UPERERG=100       ERGCUTGMA=1.0e-3    ELECMULTITIMES=1.0
+Electron MaxEnergy = 100    MinEnergy=0.001  EPRODUCEP = 1     ErgLossStraggle=1 
+         BREMS=1            BREMSANGLE = 1   BREMSPHOTONMULTITIMES=1 
+         BREMSEACHSUBTEP=0  BREMSERGLOSSMETHOD= 1 
+         XRAYMULTITIMES=1   KNOCKONMULTITIMES=0
+
+FixedSource
+particle population=9000000 fission=1 1
+RNG   type = 3   seed = 12345   stride = 10000
+
+EXTERNALSOURCE
+Source 1 Fraction=1 Particle=1  point=50 50 4 Energy=0.0253e-6  
+
+//PLOT      ColorScheme=7  Continue-calculation=0   
+//PlotID 1  Type = slice Color = MatSurf  Pixels=20000 20000   Vertexes= 0 50 0 100 50 100
+
+Tally
+CellTally 1 particle=2 type=1 
+            cell=2:21
